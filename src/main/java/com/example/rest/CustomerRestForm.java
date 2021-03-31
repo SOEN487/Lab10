@@ -28,7 +28,7 @@ public class CustomerRestForm {
      */
     @GET
     @Produces("application/xml")
-    public ArrayList<Customer> getCustomer() {
+    public ArrayList<Customer> getCustomerList() {
         return customers;
     }
 
@@ -40,7 +40,7 @@ public class CustomerRestForm {
     @GET
     @Path("{id}")
     @Produces("application/xml")
-    public Customer getCustomerList(@PathParam("id") int id) {
+    public Customer getCustomer(@PathParam("id") int id) {
         Customer customer = customers.stream().filter(customer1 -> customer1.getId() == id)
                 .findFirst()
                 .orElse(null);
@@ -113,7 +113,7 @@ public class CustomerRestForm {
     private boolean validateToken(String token) {
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
-            HttpPost httpPost = new HttpPost(String.format("http://localhost:8080/restaurant/user/auth"));
+            HttpPost httpPost = new HttpPost(String.format("%suser/auth", Main.BASE_URI));
             httpPost.addHeader("x-api-key", token);
             CloseableHttpResponse httpResponse = client.execute(httpPost);
             HttpEntity entity = httpResponse.getEntity();
